@@ -1,16 +1,37 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn
+} from "typeorm";
 
-@Entity()
+@Entity("users")
 export class User {
+  // @PrimaryGeneratedColumn("uuid")
+  // id: string;
+
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
-  firstName: string;
+  @Column("varchar", { unique: true })
+  username: string;
 
   @Column()
-  lastName: string;
+  email: string;
 
-  @Column()
-  age: number;
+  @Column("text")
+  password: string;
+
+  @Column("decimal", { precision: 8, scale: 2, default: 0.0 })
+  money: number;
+
+  @Column("boolean", { default: false })
+  isAdmin: boolean;
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 }

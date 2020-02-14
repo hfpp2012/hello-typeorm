@@ -1,5 +1,5 @@
 {
-  "name": "my-typeorm",
+  "name": "jwt-express-typeorm",
   "version": "0.0.1",
   "description": "Awesome project developed with TypeORM.",
   "devDependencies": {
@@ -10,8 +10,8 @@
     "typescript": "3.3.3333"
   },
   "dependencies": {
-    "express": "^4.17.1",
-    "mysql": "^2.18.1",
+    "body-parser": "^1.18.1",
+    "express": "^4.15.4",
     "pg": "^7.3.0",
     "reflect-metadata": "^0.1.10",
     "typeorm": "0.2.22"
