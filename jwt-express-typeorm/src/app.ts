@@ -1,12 +1,21 @@
 import "reflect-metadata";
+// express
 import express, { Express, Request, Response, Router } from "express";
+
+// middlewares
 import helmet from "helmet";
 import cors from "cors";
 import morgan from "morgan";
-import rootRoutes from "./routes";
+
 import { createConnection } from "typeorm";
+
+import rootRoutes from "./routes";
 import { Logger, ILogger } from "./utils/logger";
 import config from "./config";
+
+// error handler
+import notFoundError from "./middlewares/notFoundHandler";
+import errorMiddleware from "./middlewares/errorHandler";
 
 export class Application {
   app: Express;
@@ -37,6 +46,14 @@ export class Application {
       });
     });
 
+    this.initRoutes();
+
+    this.app.use(notFoundError);
+
+    this.app.use(errorMiddleware);
+  }
+
+  initRoutes = () => {
     // register express routes from defined application routes
     rootRoutes.forEach(route => {
       this.app.use(
@@ -62,7 +79,7 @@ export class Application {
         )
       );
     });
-  }
+  };
 
   setupDbAndServer = async () => {
     try {
