@@ -1,19 +1,22 @@
-import { getRepository } from "typeorm";
 import { Request } from "express";
 import { User } from "../entity/User";
 
 export class UserController {
-  private userRepository = getRepository(User);
-
   async all(_: Request) {
-    return this.userRepository.find();
+    return User.find();
+  }
+
+  async register(req: Request) {
+    const { username, password, email } = req.body;
+
+    return User.create({ username, password, email }).save();
   }
 
   async one(request: Request) {
-    return this.userRepository.findOne(request.params.id);
+    return User.findOne(request.params.id);
   }
 
   async save(request: Request) {
-    return this.userRepository.save(request.body);
+    return User.save(request.body);
   }
 }

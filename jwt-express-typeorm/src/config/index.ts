@@ -8,7 +8,7 @@ export default {
   host: process.env.APP_HOST || "127.0.0.1",
   port:
     (isTestEnvironment ? process.env.TEST_APP_PORT : process.env.APP_PORT) ||
-    "3000",
+    "6060",
   typeorm: {
     db: {
       host: process.env.DB_HOST || "localhost",
