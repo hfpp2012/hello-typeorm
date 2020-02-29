@@ -4,15 +4,18 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
-  BaseEntity
+  BaseEntity,
+  Index
 } from "typeorm";
 
 @Entity("users")
+// @Unique(["username"])
 export class User extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column("varchar", { unique: true })
+  @Column("varchar")
+  @Index({ unique: true })
   username: string;
 
   @Column()

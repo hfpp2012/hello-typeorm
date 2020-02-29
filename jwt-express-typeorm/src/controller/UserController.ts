@@ -1,4 +1,4 @@
-import { Request } from "express";
+import { Request, NextFunction } from "express";
 import { User } from "../entity/User";
 
 export class UserController {
@@ -6,10 +6,19 @@ export class UserController {
     return User.find();
   }
 
-  async register(req: Request) {
-    const { username, password, email } = req.body;
+  async register(
+    req: Request,
+    _res: Response,
+    next: NextFunction
+  ): Promise<any> {
+    try {
+      const { username, password, email } = req.body;
 
-    return User.create({ username, password, email }).save();
+      const user = await User.create({ username, password, email }).save();
+      return user;
+    } catch (e) {
+      next(e);
+    }
   }
 
   async one(request: Request) {

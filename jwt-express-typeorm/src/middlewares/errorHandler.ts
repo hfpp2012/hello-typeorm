@@ -23,7 +23,7 @@ const errorMiddleware = (
   response.status(status).json({
     success: false,
     message,
-    errors: error.errors
+    errors: error
   });
 
   next();
