@@ -9,6 +9,9 @@ export default {
   port:
     (isTestEnvironment ? process.env.TEST_APP_PORT : process.env.APP_PORT) ||
     "6060",
+  auth: {
+    secretKey: process.env.JWT_SECRET_KEY || "4C31F7EFD6857D91E729165510520424"
+  },
   typeorm: {
     db: {
       host: process.env.DB_HOST || "localhost",

@@ -33,16 +33,13 @@ export class UserController {
         );
       }
 
-      // const findUser = await User.findOne({ username });
-
-      // if (findUser) {
-      //   throw new HttpException(UNPROCESSABLE_ENTITY, "Username is taken", {
-      //     username: "Username is taken"
-      //   });
-      // }
+      user.hashPassword();
 
       await user.save();
-      return user;
+
+      const token = user.generateToken();
+
+      return { id: user.id, username: user.username, token };
     } catch (e) {
       next(e);
     }
