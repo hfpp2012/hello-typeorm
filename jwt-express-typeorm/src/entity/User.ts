@@ -8,6 +8,7 @@ import {
   Index
 } from "typeorm";
 import { IsEmail, IsNotEmpty, MinLength } from "class-validator";
+import { IsEqual } from "../utils/validators/decorators/IsEqual";
 
 @Entity("users")
 export class User extends BaseEntity {
@@ -26,6 +27,7 @@ export class User extends BaseEntity {
   email: string;
 
   @IsNotEmpty()
+  @IsEqual("password", { message: "Passwords must match" })
   confirmPassword: string;
 
   @Column("text")
