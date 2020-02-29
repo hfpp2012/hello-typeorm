@@ -9,6 +9,7 @@ import {
 } from "typeorm";
 import { IsEmail, IsNotEmpty, MinLength } from "class-validator";
 import { IsEqual } from "../utils/validators/decorators/IsEqual";
+import { IsUserAlreadyExist } from "../utils/validators/decorators/IsUserAlreadyExist";
 
 @Entity("users")
 export class User extends BaseEntity {
@@ -19,6 +20,9 @@ export class User extends BaseEntity {
   @Index({ unique: true })
   @IsNotEmpty()
   @MinLength(6)
+  @IsUserAlreadyExist({
+    message: "User $value already exists. Choose another name."
+  })
   username: string;
 
   @Column()
