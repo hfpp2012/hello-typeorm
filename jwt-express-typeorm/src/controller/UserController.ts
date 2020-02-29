@@ -1,5 +1,8 @@
 import { Request, NextFunction } from "express";
 import { User } from "../entity/User";
+import { validate } from "class-validator";
+import HttpException from "../exceptions/HttpException";
+import { UNPROCESSABLE_ENTITY } from "http-status-codes";
 
 export class UserController {
   async all(_: Request) {
@@ -12,9 +15,25 @@ export class UserController {
     next: NextFunction
   ): Promise<any> {
     try {
-      const { username, password, email } = req.body;
+      const { username, password, confirmPassword, email } = req.body;
 
-      const user = await User.create({ username, password, email }).save();
+      let user = new User();
+      user.username = username;
+      user.password = password;
+      user.confirmPassword = confirmPassword;
+      user.email = email;
+
+      const errors = await validate(user);
+
+      if (errors.length > 0) {
+        throw new HttpException(
+          UNPROCESSABLE_ENTITY,
+          "User register input error",
+          errors
+        );
+      }
+
+      await user.save();
       return user;
     } catch (e) {
       next(e);
