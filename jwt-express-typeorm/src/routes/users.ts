@@ -14,6 +14,12 @@ const usersRoute = [
     action: "register"
   },
   {
+    method: "post",
+    route: "/users/login",
+    controller: UserController,
+    action: "login"
+  },
+  {
     method: "get",
     route: "/users/:id",
     controller: UserController,
