@@ -14,11 +14,11 @@ export class UserController {
     try {
       const { username, password } = req.body;
 
-      let user = new Session();
-      user.username = username;
-      user.password = password;
+      let session = new Session();
+      session.username = username;
+      session.password = password;
 
-      const errors = await validate(user);
+      const errors = await validate(session);
 
       if (errors.length > 0) {
         throw new HttpException(

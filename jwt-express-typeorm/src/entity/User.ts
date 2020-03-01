@@ -23,7 +23,7 @@ export class User extends BaseEntity {
   @Index({ unique: true })
   @IsNotEmpty()
   @MinLength(6)
-  @IsUserAlreadyExist({
+  @IsUserAlreadyExist(false, {
     message: "User $value already exists. Choose another name."
   })
   username: string;

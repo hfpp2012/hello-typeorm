@@ -10,21 +10,24 @@ import { User } from "../../../entity/User";
 @ValidatorConstraint({ async: true })
 export class IsUserAlreadyExistConstraint
   implements ValidatorConstraintInterface {
-  validate(userName: any, _args: ValidationArguments) {
-    return User.findOne({ username: userName }).then(user => {
-      if (user) return false;
-      return true;
-    });
+  async validate(userName: any, args: ValidationArguments) {
+    const [flag] = args.constraints;
+    const user = await User.findOne({ username: userName });
+    if (user) return flag;
+    return !flag;
   }
 }
 
-export function IsUserAlreadyExist(validationOptions?: ValidationOptions) {
+export function IsUserAlreadyExist(
+  flag: boolean,
+  validationOptions?: ValidationOptions
+) {
   return function(object: Object, propertyName: string) {
     registerDecorator({
       target: object.constructor,
       propertyName: propertyName,
       options: validationOptions,
-      constraints: [],
+      constraints: [flag],
       validator: IsUserAlreadyExistConstraint
     });
   };
