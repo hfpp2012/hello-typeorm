@@ -28,7 +28,10 @@ export class UserController {
         );
       }
 
-      return {};
+      const user = await User.findOneOrFail({ username });
+      const token = user.generateToken();
+
+      return { id: user.id, username: user.username, token };
     } catch (e) {
       next(e);
     }

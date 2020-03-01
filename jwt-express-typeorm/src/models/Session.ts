@@ -1,13 +1,13 @@
 import { IsNotEmpty } from "class-validator";
-import { IsUserAlreadyExist } from "../utils/validators/decorators/IsUserAlreadyExist";
+import { ComparePasswordAndCheckUserExist } from "../utils/validators/decorators/ComparePasswordAndCheckUserExist";
 
 export class Session {
   @IsNotEmpty()
-  @IsUserAlreadyExist(true, {
-    message: "User not found"
-  })
   username: string;
 
   @IsNotEmpty()
+  @ComparePasswordAndCheckUserExist("username", {
+    message: "Wrong credentials Or User not found"
+  })
   password: string;
 }
