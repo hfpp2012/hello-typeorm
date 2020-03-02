@@ -1,9 +1,8 @@
 import { Request, NextFunction } from "express";
 import { User } from "../entity/User";
 import { validate } from "class-validator";
-import HttpException from "../exceptions/HttpException";
-import { UNPROCESSABLE_ENTITY } from "http-status-codes";
 import { Session } from "./../models/Session";
+import { throwInputError } from "../utils/throwError";
 
 export class UserController {
   async all(_: Request) {
@@ -21,11 +20,7 @@ export class UserController {
       const errors = await validate(session);
 
       if (errors.length > 0) {
-        throw new HttpException(
-          UNPROCESSABLE_ENTITY,
-          "User login input error",
-          errors
-        );
+        throwInputError(errors, "User login input error");
       }
 
       const user = await User.findOneOrFail({ username });
@@ -54,11 +49,7 @@ export class UserController {
       const errors = await validate(user);
 
       if (errors.length > 0) {
-        throw new HttpException(
-          UNPROCESSABLE_ENTITY,
-          "User register input error",
-          errors
-        );
+        throwInputError(errors, "User register input error");
       }
 
       user.hashPassword();

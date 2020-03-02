@@ -17,7 +17,7 @@ const postsRoute = [
     method: "post",
     route: "/posts",
     controller: PostController,
-    action: "save"
+    action: "create"
   },
   {
     method: "delete",
