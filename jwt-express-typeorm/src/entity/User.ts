@@ -5,7 +5,8 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   BaseEntity,
-  Index
+  Index,
+  OneToMany
 } from "typeorm";
 import { IsEmail, IsNotEmpty, MinLength } from "class-validator";
 import { IsEqual } from "../utils/validators/decorators/IsEqual";
@@ -13,6 +14,7 @@ import { IsUserAlreadyExist } from "../utils/validators/decorators/IsUserAlready
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import config from "../config";
+import { Post } from "./Post";
 
 @Entity("users")
 export class User extends BaseEntity {
@@ -51,6 +53,12 @@ export class User extends BaseEntity {
       expiresIn: "5d"
     });
   }
+
+  @OneToMany(
+    _ => Post,
+    post => post.user
+  )
+  posts: Post[];
 
   @CreateDateColumn()
   createdAt: Date;

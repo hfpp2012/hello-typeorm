@@ -1,3 +1,4 @@
 import usersRoute from "./users";
+import postsRoute from "./posts";
 
-export default [...usersRoute];
+export default [...usersRoute, ...postsRoute];

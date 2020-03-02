@@ -76,8 +76,4 @@ export class UserController {
   async one(request: Request) {
     return User.findOne(request.params.id);
   }
-
-  async save(request: Request) {
-    return User.save(request.body);
-  }
 }
