@@ -15,6 +15,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import config from "../config";
 import { Post } from "./Post";
+import { JwtPayload } from "../types/Jwt";
 
 @Entity("users")
 export class User extends BaseEntity {
@@ -48,7 +49,7 @@ export class User extends BaseEntity {
   }
 
   generateToken() {
-    const payload = { id: this.id, username: this.username };
+    const payload: JwtPayload = { id: this.id, username: this.username };
     return jwt.sign(payload, config.auth.secretKey, {
       expiresIn: "5d"
     });

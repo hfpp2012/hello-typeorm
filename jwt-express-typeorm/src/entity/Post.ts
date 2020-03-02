@@ -21,5 +21,6 @@ export class Post extends BaseEntity {
     _ => User,
     user => user.posts
   )
+  @IsNotEmpty()
   user: User;
 }
