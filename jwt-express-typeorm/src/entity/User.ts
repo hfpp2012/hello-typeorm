@@ -16,6 +16,7 @@ import jwt from "jsonwebtoken";
 import config from "../config";
 import { Post } from "./Post";
 import { JwtPayload } from "../types/Jwt";
+import { Exclude } from "class-transformer";
 
 @Entity("users")
 export class User extends BaseEntity {
@@ -42,6 +43,7 @@ export class User extends BaseEntity {
 
   @Column("text")
   @IsNotEmpty()
+  @Exclude()
   password: string;
 
   hashPassword() {

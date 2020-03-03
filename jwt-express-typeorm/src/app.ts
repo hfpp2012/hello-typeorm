@@ -16,6 +16,7 @@ import config from "./config";
 // error handler
 import notFoundError from "./middlewares/notFoundHandler";
 import errorMiddleware from "./middlewares/errorHandler";
+import { classToPlain } from "class-transformer";
 
 export class Application {
   app: Express;
@@ -70,11 +71,11 @@ export class Application {
             if (result instanceof Promise) {
               result.then(result =>
                 result !== null && result !== undefined
-                  ? res.json({ success: true, data: result })
+                  ? res.json({ success: true, data: classToPlain(result) })
                   : undefined
               );
             } else if (result !== null && result !== undefined) {
-              res.json(result);
+              res.json(classToPlain(result));
             }
           }
         )
