@@ -69,11 +69,13 @@ export class Application {
               next
             );
             if (result instanceof Promise) {
-              result.then(result =>
-                result !== null && result !== undefined
-                  ? res.json({ success: true, data: classToPlain(result) })
-                  : undefined
-              );
+              result
+                .then(result =>
+                  result !== null && result !== undefined
+                    ? res.json({ success: true, data: classToPlain(result) })
+                    : undefined
+                )
+                .catch(e => next(e));
             } else if (result !== null && result !== undefined) {
               res.json(classToPlain(result));
             }

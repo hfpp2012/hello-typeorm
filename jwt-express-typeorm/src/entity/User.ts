@@ -1,13 +1,4 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  CreateDateColumn,
-  UpdateDateColumn,
-  BaseEntity,
-  Index,
-  OneToMany
-} from "typeorm";
+import { Entity, Column, Index, OneToMany, BeforeInsert } from "typeorm";
 import { IsEmail, IsNotEmpty, MinLength } from "class-validator";
 import { IsEqual } from "../utils/validators/decorators/IsEqual";
 import { IsUserAlreadyExist } from "../utils/validators/decorators/IsUserAlreadyExist";
@@ -17,12 +8,10 @@ import config from "../config";
 import { Post } from "./Post";
 import { JwtPayload } from "../types/Jwt";
 import { Exclude } from "class-transformer";
+import Base from "./Base";
 
 @Entity("users")
-export class User extends BaseEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+export class User extends Base {
   @Column()
   @Index({ unique: true })
   @IsNotEmpty()
@@ -46,11 +35,12 @@ export class User extends BaseEntity {
   @Exclude()
   password: string;
 
+  @BeforeInsert()
   hashPassword() {
     this.password = bcrypt.hashSync(this.password, 10);
   }
 
-  generateToken() {
+  get token() {
     const payload: JwtPayload = { id: this.id, username: this.username };
     return jwt.sign(payload, config.auth.secretKey, {
       expiresIn: "5d"
@@ -62,10 +52,4 @@ export class User extends BaseEntity {
     post => post.user
   )
   posts: Post[];
-
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @UpdateDateColumn()
-  updatedAt: Date;
 }
