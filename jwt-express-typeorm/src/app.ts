@@ -60,6 +60,7 @@ export class Application {
         "/api",
         (this.router as any)[route.method](
           route.route,
+          route.middlewares,
           (req: Request, res: Response, next: Function) => {
             const result = new (route.controller as any)()[route.action](
               req,
