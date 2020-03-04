@@ -6,14 +6,14 @@ import { User } from "../entity/User";
 
 export class PostController {
   async all(_: Request) {
-    return Post.find();
+    return await Post.find();
   }
 
   async one(request: Request) {
     return Post.findOne(request.params.id);
   }
 
-  async create(req: Request, _res: Response): Promise<any> {
+  async create(req: Request): Promise<any> {
     const user = req.currentUser as User;
     const { body } = req.body;
 

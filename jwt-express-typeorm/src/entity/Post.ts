@@ -11,8 +11,12 @@ export class Post extends Base {
 
   @ManyToOne(
     _ => User,
-    user => user.posts
+    user => user.posts,
+    { eager: true }
   )
   @IsNotEmpty()
   user: User;
+
+  // @RelationId((post: Post) => post.user)
+  // userId: number;
 }
