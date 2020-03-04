@@ -9,7 +9,7 @@ export class UserController {
     return await User.find({ relations: ["posts"] });
   }
 
-  async login(req: Request): Promise<any> {
+  async login(req: Request) {
     const { username, password } = req.body;
 
     let session = new Session();
@@ -27,7 +27,7 @@ export class UserController {
     return { id: user.id, username: user.username, token: user.token };
   }
 
-  async register(req: Request): Promise<any> {
+  async register(req: Request) {
     const { username, password, confirmPassword, email } = req.body;
 
     let user = new User();
@@ -47,7 +47,7 @@ export class UserController {
     return { id: user.id, username: user.username, token: user.token };
   }
 
-  async one(request: Request) {
-    return await User.findOne(request.params.id);
+  async one(request: Request): Promise<User> {
+    return await User.findOneOrFail(request.params.id);
   }
 }
