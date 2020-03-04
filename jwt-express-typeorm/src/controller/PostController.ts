@@ -1,7 +1,10 @@
 import { Request } from "express";
 import { Post } from "../entity/Post";
 import { validate } from "class-validator";
-import { throwInputError } from "../utils/throwError";
+import {
+  throwInputError,
+  throwActionNotAllowedError
+} from "../utils/throwError";
 import { User } from "../entity/User";
 
 export class PostController {
@@ -18,6 +21,26 @@ export class PostController {
 
   async one(request: Request) {
     return await Post.findOneOrFail(request.params.id);
+  }
+
+  async update(req: Request) {
+    const { body } = req.body;
+    const currentUser = req.currentUser as User;
+
+    const post = await Post.findOneOrFail(req.params.id);
+    post.body = body;
+
+    const errors = await validate(post);
+
+    if (errors.length > 0) {
+      throwInputError(errors, "Post input error");
+    }
+
+    if (post.user.id !== currentUser.id) {
+      throwActionNotAllowedError();
+    }
+
+    return await Post.save(post);
   }
 
   async create(req: Request): Promise<any> {

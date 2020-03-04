@@ -24,6 +24,13 @@ const postsRoute = [
     action: "create"
   },
   {
+    method: "put",
+    route: "/posts/:id",
+    middlewares: [checkAuth],
+    controller: PostController,
+    action: "update"
+  },
+  {
     method: "delete",
     route: "/posts/:id",
     middlewares: [],

@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 
 import HttpException from "../exceptions/HttpException";
-import { INTERNAL_SERVER_ERROR } from "http-status-codes";
+import { INTERNAL_SERVER_ERROR, NOT_FOUND } from "http-status-codes";
 
 /**
  * Generic error response middleware for internal server errors.
@@ -17,8 +17,12 @@ const errorMiddleware = (
   response: Response,
   next: NextFunction
 ) => {
-  const status = error.status || INTERNAL_SERVER_ERROR;
+  let status = error.status || INTERNAL_SERVER_ERROR;
   const message = error.message || "Something went wrong";
+
+  if (error && error.name === "EntityNotFound") {
+    status = NOT_FOUND;
+  }
 
   response.status(status).json({
     success: false,
