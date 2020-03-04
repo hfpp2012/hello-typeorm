@@ -24,11 +24,25 @@ const postsRoute = [
     action: "create"
   },
   {
+    method: "post",
+    route: "/posts/:id/comments",
+    middlewares: [checkAuth],
+    controller: PostController,
+    action: "createComment"
+  },
+  {
     method: "delete",
     route: "/posts/:id",
     middlewares: [checkAuth],
     controller: PostController,
     action: "remove"
+  },
+  {
+    method: "delete",
+    route: "/posts/comments/:id",
+    middlewares: [checkAuth],
+    controller: PostController,
+    action: "removeComment"
   },
   {
     method: "put",

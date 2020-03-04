@@ -1,11 +1,11 @@
-import { Entity, Column, ManyToOne, OneToMany } from "typeorm";
+import { Entity, Column, ManyToOne } from "typeorm";
 import { IsNotEmpty } from "class-validator";
 import { User } from "./User";
-import { Comment } from "./Comment";
+import { Post } from "./Post";
 import Base from "./Base";
 
-@Entity("posts")
-export class Post extends Base {
+@Entity("comments")
+export class Comment extends Base {
   @Column("text")
   @IsNotEmpty()
   body: string;
@@ -18,9 +18,10 @@ export class Post extends Base {
   @IsNotEmpty()
   user: User;
 
-  @OneToMany(
-    _ => Comment,
-    comment => comment.post
+  @ManyToOne(
+    _ => Post,
+    post => post.comments
   )
-  comments: Comment[];
+  @IsNotEmpty()
+  post: Post;
 }

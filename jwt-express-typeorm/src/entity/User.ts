@@ -6,6 +6,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import config from "../config";
 import { Post } from "./Post";
+import { Comment } from "./Comment";
 import { JwtPayload } from "../types/Jwt";
 import { Exclude } from "class-transformer";
 import Base from "./Base";
@@ -52,4 +53,10 @@ export class User extends Base {
     post => post.user
   )
   posts: Post[];
+
+  @OneToMany(
+    _ => Comment,
+    comment => comment.user
+  )
+  comments: Comment[];
 }

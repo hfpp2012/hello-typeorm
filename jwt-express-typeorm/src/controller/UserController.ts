@@ -5,10 +5,24 @@ import { Session } from "./../models/Session";
 import { throwInputError } from "../utils/throwError";
 
 export class UserController {
+  /**
+   * Show all users
+   *
+   * @Method GET
+   * @URL /api/users
+   *
+   */
   async all(_: Request) {
     return await User.find({ relations: ["posts"] });
   }
 
+  /**
+   * Login a user
+   *
+   * @Method POST
+   * @URL /api/users/login
+   *
+   */
   async login(req: Request) {
     const { username, password } = req.body;
 
@@ -27,6 +41,13 @@ export class UserController {
     return { id: user.id, username: user.username, token: user.token };
   }
 
+  /**
+   * Register a user
+   *
+   * @Method POST
+   * @URL /api/users/register
+   *
+   */
   async register(req: Request) {
     const { username, password, confirmPassword, email } = req.body;
 
@@ -47,6 +68,13 @@ export class UserController {
     return { id: user.id, username: user.username, token: user.token };
   }
 
+  /**
+   * Show single user
+   *
+   * @Method GET
+   * @URL /api/users/:id
+   *
+   */
   async one(request: Request): Promise<User> {
     return await User.findOneOrFail(request.params.id);
   }
