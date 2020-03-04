@@ -73,11 +73,9 @@ export class Application {
                 .then(result =>
                   result !== null && result !== undefined
                     ? res.json({ success: true, data: classToPlain(result) })
-                    : undefined
+                    : res.status(404).json({ success: false })
                 )
                 .catch(e => next(e));
-            } else if (result !== null && result !== undefined) {
-              res.json(classToPlain(result));
             }
           }
         )

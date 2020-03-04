@@ -5,12 +5,19 @@ import { throwInputError } from "../utils/throwError";
 import { User } from "../entity/User";
 
 export class PostController {
-  async all(_: Request) {
-    return await Post.find();
+  async all(req: Request) {
+    let { current, pageSize } = req.query;
+
+    [current, pageSize] = [+current, +pageSize];
+
+    return await Post.findAndCount({
+      take: pageSize,
+      skip: (current - 1) * pageSize
+    });
   }
 
   async one(request: Request) {
-    return Post.findOne(request.params.id);
+    return await Post.findOneOrFail(request.params.id);
   }
 
   async create(req: Request): Promise<any> {
