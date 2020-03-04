@@ -23,6 +23,18 @@ export class PostController {
     return await Post.findOneOrFail(request.params.id);
   }
 
+  async remove(req: Request) {
+    const post = await Post.findOneOrFail(req.params.id);
+    const currentUser = req.currentUser as User;
+
+    if (post.user.id !== currentUser.id) {
+      throwActionNotAllowedError();
+    }
+
+    await Post.remove(post);
+    return { message: "deleted sucessfully" };
+  }
+
   async update(req: Request): Promise<Post> {
     const { body } = req.body;
     const post = await Post.findOneOrFail(req.params.id);

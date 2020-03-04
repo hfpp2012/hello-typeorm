@@ -26,7 +26,7 @@ const postsRoute = [
   {
     method: "delete",
     route: "/posts/:id",
-    middlewares: [],
+    middlewares: [checkAuth],
     controller: PostController,
     action: "remove"
   },
