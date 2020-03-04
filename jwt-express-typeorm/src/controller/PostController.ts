@@ -6,6 +6,7 @@ import {
   throwActionNotAllowedError
 } from "../utils/throwError";
 import { User } from "../entity/User";
+import { Comment } from "../entity/Comment";
 
 export class PostController {
   async all(req: Request) {
@@ -70,5 +71,31 @@ export class PostController {
     }
 
     return await Post.save(post);
+  }
+
+  /**
+   * Create comment for post
+   *
+   * @Method POST
+   * @URL /api/posts/:id/comments
+   *
+   */
+  async createComment(req: Request): Promise<Comment> {
+    const currentUser = req.currentUser as User;
+    const { body } = req.body;
+    const post = await Post.findOneOrFail(req.params.id);
+
+    let comment = new Comment();
+    comment.body = body;
+    comment.user = currentUser;
+    comment.post = post;
+
+    const errors = await validate(comment);
+
+    if (errors.length > 0) {
+      throwInputError(errors, "Comment input error");
+    }
+
+    return await Comment.save(comment);
   }
 }

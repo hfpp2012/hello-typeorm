@@ -1,6 +1,7 @@
-import { Entity, Column, ManyToOne } from "typeorm";
+import { Entity, Column, ManyToOne, OneToMany } from "typeorm";
 import { IsNotEmpty } from "class-validator";
 import { User } from "./User";
+import { Comment } from "./Comment";
 import Base from "./Base";
 
 @Entity("posts")
@@ -17,6 +18,10 @@ export class Post extends Base {
   @IsNotEmpty()
   user: User;
 
-  // @RelationId((post: Post) => post.user)
-  // userId: number;
+  @OneToMany(
+    _ => Comment,
+    comment => comment.user,
+    { eager: true }
+  )
+  comments: Comment[];
 }
