@@ -31,6 +31,13 @@ const postsRoute = [
     action: "createComment"
   },
   {
+    method: "post",
+    route: "/posts/:id/like",
+    middlewares: [checkAuth],
+    controller: PostController,
+    action: "likePost"
+  },
+  {
     method: "delete",
     route: "/posts/:id",
     middlewares: [checkAuth],

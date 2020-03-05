@@ -49,13 +49,13 @@ export class User extends Base {
   }
 
   @OneToMany(
-    _ => Post,
+    () => Post,
     post => post.user
   )
   posts: Post[];
 
   @OneToMany(
-    _ => Comment,
+    () => Comment,
     comment => comment.user
   )
   comments: Comment[];

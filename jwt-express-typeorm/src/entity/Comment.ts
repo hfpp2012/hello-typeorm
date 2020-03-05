@@ -1,4 +1,4 @@
-import { Entity, Column, ManyToOne } from "typeorm";
+import { Entity, Column, ManyToOne, JoinColumn } from "typeorm";
 import { IsNotEmpty } from "class-validator";
 import { User } from "./User";
 import { Post } from "./Post";
@@ -11,18 +11,20 @@ export class Comment extends Base {
   body: string;
 
   @ManyToOne(
-    _ => User,
+    () => User,
     user => user.posts,
     { eager: true }
   )
+  @JoinColumn({ name: "user_id" })
   @IsNotEmpty()
   user: User;
 
   @ManyToOne(
-    _ => Post,
+    () => Post,
     post => post.comments,
     { onDelete: "CASCADE" }
   )
+  @JoinColumn({ name: "post_id" })
   @IsNotEmpty()
   post: Post;
 }
