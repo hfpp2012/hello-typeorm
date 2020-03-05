@@ -154,4 +154,30 @@ export class PostController {
     await Comment.remove(comment);
     return { message: "deleted sucessfully" };
   }
+
+  /**
+   * Like post
+   *
+   * @Method POST
+   * @URL /api/posts/:id/like
+   *
+   */
+  async likePost(req: Request): Promise<Post> {
+    const currentUser = req.currentUser as User;
+    const post = await Post.findOneOrFail(req.params.id, {
+      relations: ["likes"]
+    });
+
+    console.log(post.likes);
+
+    if (post.likes && post.likes.find(like => like.id === currentUser.id)) {
+      post.likes = post.likes.filter(like => {
+        like.id !== currentUser.id;
+      });
+    } else {
+      post.likes = [currentUser];
+    }
+
+    return await Post.save(post);
+  }
 }

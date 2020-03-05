@@ -1,4 +1,11 @@
-import { Entity, Column, ManyToOne, OneToMany } from "typeorm";
+import {
+  Entity,
+  Column,
+  ManyToOne,
+  OneToMany,
+  ManyToMany,
+  JoinTable
+} from "typeorm";
 import { IsNotEmpty } from "class-validator";
 import { User } from "./User";
 import { Comment } from "./Comment";
@@ -11,7 +18,7 @@ export class Post extends Base {
   body: string;
 
   @ManyToOne(
-    _ => User,
+    () => User,
     user => user.posts,
     { eager: true }
   )
@@ -19,8 +26,12 @@ export class Post extends Base {
   user: User;
 
   @OneToMany(
-    _ => Comment,
+    () => Comment,
     comment => comment.post
   )
   comments: Comment[];
+
+  @ManyToMany(() => User)
+  @JoinTable()
+  likes: User[];
 }

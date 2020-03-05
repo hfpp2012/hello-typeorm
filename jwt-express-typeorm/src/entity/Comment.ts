@@ -11,7 +11,7 @@ export class Comment extends Base {
   body: string;
 
   @ManyToOne(
-    _ => User,
+    () => User,
     user => user.posts,
     { eager: true }
   )
@@ -19,7 +19,7 @@ export class Comment extends Base {
   user: User;
 
   @ManyToOne(
-    _ => Post,
+    () => Post,
     post => post.comments,
     { onDelete: "CASCADE" }
   )
