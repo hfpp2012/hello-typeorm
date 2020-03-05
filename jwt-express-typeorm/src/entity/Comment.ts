@@ -20,7 +20,8 @@ export class Comment extends Base {
 
   @ManyToOne(
     _ => Post,
-    post => post.comments
+    post => post.comments,
+    { onDelete: "CASCADE" }
   )
   @IsNotEmpty()
   post: Post;
